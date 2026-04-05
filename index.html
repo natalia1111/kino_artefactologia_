@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Кинематографическая Артефактология</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f4f5;
+  --surface: #ffffff;
+  --surface2: #f9f9fb;
+  --border: #e4e4e7;
+  --text: #18181b;
+  --text2: #52525b;
+  --text3: #a1a1aa;
+  --accent: #2563eb;
+  --accent-bg: #eff6ff;
+  --accent-border: #bfdbfe;
+  --green: #16a34a;
+  --green-bg: #f0fdf4;
+  --green-border: #bbf7d0;
+  --red: #dc2626;
+  --red-bg: #fef2f2;
+  --red-border: #fecaca;
+  --amber: #d97706;
+  --amber-bg: #fffbeb;
+  --amber-border: #fde68a;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,0.10);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+/* TOP BAR */
+.topbar {
+  height: 48px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text2);
+}
+
+/* INTRO */
+#intro {
+  min-height: calc(100vh - 48px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 56px 24px 80px;
+}
+.intro-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.4s 0.05s both;
+}
+.intro-title {
+  font-size: clamp(24px, 5vw, 48px);
+  font-weight: 800;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.15;
+  margin-bottom: 8px;
+  animation: fadeUp 0.4s 0.1s both;
+}
+.intro-title em { color: var(--accent); font-style: normal; }
+.intro-tagline {
+  font-size: 16px;
+  color: var(--text3);
+  margin-bottom: 28px;
+  animation: fadeUp 0.4s 0.15s both;
+}
+.intro-desc {
+  max-width: 540px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text2);
+  text-align: center;
+  margin-bottom: 32px;
+  animation: fadeUp 0.4s 0.2s both;
+}
+.intro-desc strong { color: var(--text); font-weight: 700; }
+.legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 32px;
+  animation: fadeUp 0.4s 0.25s both;
+}
+.legend-pill {
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.lp-green { color: var(--green); border-color: var(--green-border); background: var(--green-bg); }
+.lp-amber { color: var(--amber); border-color: var(--amber-border); background: var(--amber-bg); }
+.lp-red   { color: var(--red);   border-color: var(--red-border);   background: var(--red-bg); }
+.lp-blue  { color: var(--accent); border-color: var(--accent-border); background: var(--accent-bg); }
+.intro-films-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text3);
+  margin-bottom: 10px;
+  animation: fadeUp 0.4s 0.3s both;
+}
+.films-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  max-width: 640px;
+  margin-bottom: 36px;
+  animation: fadeUp 0.4s 0.35s both;
+}
+.film-chip {
+  padding: 4px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 12px;
+  color: var(--text2);
+  font-weight: 500;
+}
+.start-btn {
+  padding: 13px 44px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  animation: fadeUp 0.4s 0.4s both;
+}
+.start-btn:hover { background: #1d4ed8; transform: translateY(-1px); }
+
+/* GAME */
+#game { display: none; }
+.game-wrap { max-width: 780px; margin: 0 auto; padding: 24px 20px 60px; }
+
+.hud {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  box-shadow: var(--shadow);
+}
+.hud-left { display: flex; flex-direction: column; gap: 2px; }
+.hud-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.hud-label { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; }
+.hud-val { font-size: 22px; font-weight: 700; color: var(--text); line-height: 1; }
+.hud-center { text-align: center; }
+.hud-q-num { font-size: 34px; font-weight: 800; color: var(--accent); line-height: 1; }
+.hud-q-tot { font-size: 12px; color: var(--text3); }
+
+.progress-wrap { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 16px; }
+.progress-bar { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.5s ease; }
+
+.art-bar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow);
+}
+.art-bar-label { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0; }
+.art-bar-icons { display: flex; flex-wrap: wrap; gap: 3px; }
+.art-bar-icons span { font-size: 20px; display: inline-block; line-height: 1; animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+.q-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+  animation: cardIn 0.35s cubic-bezier(0.4,0,0.2,1) both;
+}
+.q-film-row { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.q-film-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  background: var(--surface2);
+  border-radius: 100px;
+  border: 1px solid var(--border);
+}
+.q-film-name { font-size: 16px; font-weight: 700; color: var(--text); }
+.q-scene {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text2);
+  border-left: 3px solid var(--accent);
+  padding-left: 14px;
+  margin-bottom: 10px;
+}
+.q-question { font-size: 14px; font-weight: 600; color: var(--text); margin-top: 12px; }
+.artifact-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--accent);
+}
+.artifact-preview .art-icon { font-size: 18px; }
+
+.answers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.ans-btn {
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  box-shadow: var(--shadow);
+  animation: cardIn 0.35s both;
+}
+.ans-btn:nth-child(1) { animation-delay: 0.04s; }
+.ans-btn:nth-child(2) { animation-delay: 0.08s; }
+.ans-btn:nth-child(3) { animation-delay: 0.12s; }
+.ans-btn:nth-child(4) { animation-delay: 0.16s; }
+.ans-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-bg); transform: translateY(-1px); }
+.ans-icon { font-size: 18px; margin-bottom: 6px; display: block; }
+.ans-label { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.ans-desc  { font-size: 12px; color: var(--text3); line-height: 1.4; }
+.ans-btn:disabled { cursor: default; transform: none !important; }
+.ans-btn.correct { border-color: var(--green) !important; background: var(--green-bg) !important; }
+.ans-btn.correct .ans-label { color: var(--green); }
+.ans-btn.wrong   { border-color: var(--red) !important; background: var(--red-bg) !important; }
+.ans-btn.wrong .ans-label   { color: var(--red); }
+.ans-btn.dimmed  { opacity: 0.4; }
+
+.art-reward {
+  display: none;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  align-items: center;
+  gap: 12px;
+  animation: bounceIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.art-reward.show { display: flex; }
+.art-reward-icon { font-size: 32px; flex-shrink: 0; }
+.art-reward-text strong { font-size: 13px; color: var(--accent); display: block; margin-bottom: 1px; font-weight: 700; }
+.art-reward-text span { font-size: 12px; color: var(--text3); }
+
+.explain-box {
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.7;
+  display: none;
+  animation: fadeUp 0.25s both;
+}
+.explain-box.show { display: block; }
+.explain-box.ok   { background: var(--green-bg); border: 1px solid var(--green-border); }
+.explain-box.fail { background: var(--red-bg);   border: 1px solid var(--red-border); }
+.explain-head { font-weight: 700; margin-bottom: 5px; font-size: 13px; }
+.explain-box.ok   .explain-head { color: var(--green); }
+.explain-box.fail .explain-head { color: var(--red); }
+.explain-alt { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.07); font-size: 12px; color: var(--text2); }
+.explain-alt strong { color: var(--accent); }
+
+.next-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--text);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: none;
+}
+.next-btn:hover { background: var(--accent); }
+.next-btn.show { display: block; animation: fadeUp 0.25s both; }
+
+/* END */
+#endscreen { display: none; }
+#endscreen.show { display: block; }
+
+.end-hero { background: var(--text); padding: 48px 24px 36px; text-align: center; }
+.end-hero-eyebrow { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; animation: fadeUp 0.4s 0.05s both; }
+.end-hero-score { font-size: clamp(52px, 12vw, 96px); font-weight: 800; color: #fff; line-height: 1; margin-bottom: 4px; animation: fadeUp 0.4s 0.1s both; }
+.end-hero-max { font-size: 14px; color: rgba(255,255,255,0.4); animation: fadeUp 0.4s 0.15s both; }
+
+.end-body { max-width: 780px; margin: 0 auto; padding: 32px 20px 80px; }
+
+.end-rank-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  animation: fadeUp 0.4s 0.2s both;
+}
+.end-rank-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.end-rank-sub   { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+.end-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 28px;
+  animation: fadeUp 0.4s 0.25s both;
+}
+.end-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; box-shadow: var(--shadow); }
+.end-stat-num   { font-size: 26px; font-weight: 700; color: var(--accent); }
+.end-stat-label { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+
+.museum-section { animation: fadeUp 0.4s 0.3s both; }
+.museum-title { font-size: 18px; font-weight: 700; color: var(--text); text-align: center; margin-bottom: 4px; }
+.museum-sub   { font-size: 13px; color: var(--text3); text-align: center; margin-bottom: 16px; }
+.museum-board { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.museum-board-label { font-size: 12px; color: var(--text3); text-align: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.museum-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+.museum-artifact {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 8px;
+  text-align: center;
+  transition: transform 0.15s, box-shadow 0.15s;
+  position: relative;
+  animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.museum-artifact:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.museum-artifact.locked { opacity: 0.28; filter: grayscale(1); }
+.museum-artifact .ma-icon { font-size: 26px; margin-bottom: 6px; display: block; }
+.museum-artifact .ma-name { font-size: 10px; font-weight: 600; color: var(--text); margin-bottom: 2px; line-height: 1.3; }
+.museum-artifact .ma-film { font-size: 9px; color: var(--text3); }
+.museum-artifact .ma-badge {
+  position: absolute; top: 5px; right: 5px;
+  width: 13px; height: 13px; border-radius: 50%; font-size: 7px;
+  display: flex; align-items: center; justify-content: center; font-weight: 700;
+}
+.ma-badge.anomaly { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.ma-badge.paradox { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.ma-badge.absurd  { background: var(--red-bg);   color: var(--red);   border: 1px solid var(--red-border); }
+.ma-badge.fact    { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent-border); }
+
+.end-restart { margin-top: 28px; text-align: center; animation: fadeUp 0.4s 0.6s both; }
+.restart-btn {
+  padding: 12px 40px;
+  background: var(--text);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.restart-btn:hover { background: var(--accent); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes bounceIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 560px) {
+  .answers { grid-template-columns: 1fr; }
+  .hud { grid-template-columns: 1fr 1fr; }
+  .hud-center { display: none; }
+  .end-stats-row { grid-template-columns: 1fr 1fr; }
+  .museum-grid { grid-template-columns: repeat(3, 1fr); }
+  .q-card { padding: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">Кинематографическая Артефактология · Green Steam · БГПУ</div>
+
+<div id="intro">
+  <div class="intro-badge">Green Steam · Факультет Естествознания</div>
+  <h1 class="intro-title">Кинематографическая<br><em>Артефактология</em></h1>
+  <p class="intro-tagline">С мира по артефакту!</p>
+  <p class="intro-desc">
+    Любимые фильмы не просто развлекают — они <strong>незаметно формируют</strong> наше представление о науке.
+    Распознай тип ошибки в каждой сцене и собери коллекцию артефактов в свой музей.<br><br>
+    28 вопросов · 28 артефактов · 4 категории ошибок
+  </p>
+  <div class="legend-row">
+    <span class="legend-pill lp-green">🟢 Экранная аномалия</span>
+    <span class="legend-pill lp-amber">🟡 Кинопарадокс</span>
+    <span class="legend-pill lp-red">🔴 Кино-абсурд</span>
+    <span class="legend-pill lp-blue">✅ Научный факт</span>
+  </div>
+  <p class="intro-films-label">Фильмы в игре</p>
+  <div class="films-grid" id="films-list"></div>
+  <button class="start-btn" onclick="startGame()">▶ Начать расследование</button>
+</div>
+
+<div id="game">
+  <div class="game-wrap">
+    <div class="hud">
+      <div class="hud-left">
+        <span class="hud-label">Артефакты</span>
+        <span class="hud-val" id="art-count">0 / 28</span>
+      </div>
+      <div class="hud-center">
+        <div class="hud-q-num" id="q-num">1</div>
+        <div class="hud-q-tot">из <span id="q-tot">28</span></div>
+      </div>
+      <div class="hud-right">
+        <span class="hud-label">Серия 🔥</span>
+        <span class="hud-val" id="streak">0</span>
+      </div>
+    </div>
+    <div class="progress-wrap"><div class="progress-bar" id="progress" style="width:0%"></div></div>
+    <div class="art-bar">
+      <span class="art-bar-label">Коллекция:</span>
+      <div class="art-bar-icons" id="art-bar-icons"></div>
+    </div>
+    <div class="q-card" id="q-card">
+      <div class="q-film-row">
+        <span class="q-film-tag" id="card-genre">Физика</span>
+        <span class="q-film-name" id="card-film">Фильм</span>
+      </div>
+      <div class="q-scene" id="card-scene"></div>
+      <div class="q-question">Что это за ошибка?</div>
+      <div class="artifact-preview">
+        <span class="art-icon" id="preview-icon">🏺</span>
+        <span>Правильный ответ открывает: <strong id="preview-name">Артефакт</strong></span>
+      </div>
+    </div>
+    <div class="answers" id="answers"></div>
+    <div class="art-reward" id="art-reward">
+      <div class="art-reward-icon" id="reward-icon">🏺</div>
+      <div class="art-reward-text">
+        <strong id="reward-name"></strong>
+        <span id="reward-desc"></span>
+      </div>
+    </div>
+    <div class="explain-box" id="explain">
+      <div class="explain-head" id="explain-head"></div>
+      <div id="explain-body"></div>
+      <div class="explain-alt" id="explain-alt"></div>
+    </div>
+    <button class="next-btn" id="next-btn">Следующий вопрос →</button>
+  </div>
+</div>
+
+<div id="endscreen">
+  <div class="end-hero">
+    <div class="end-hero-eyebrow">Расследование завершено</div>
+    <div class="end-hero-score" id="end-score-num">0</div>
+    <div class="end-hero-max">артефактов собрано из 28</div>
+  </div>
+  <div class="end-body">
+    <div class="end-rank-card">
+      <div class="end-rank-title" id="end-rank-title"></div>
+      <div class="end-rank-sub" id="end-rank-sub"></div>
+    </div>
+    <div class="end-stats-row">
+      <div class="end-stat"><div class="end-stat-num" id="stat-correct"></div><div class="end-stat-label">Верных ответов</div></div>
+      <div class="end-stat"><div class="end-stat-num" id="stat-streak"></div><div class="end-stat-label">Макс. серия</div></div>
+      <div class="end-stat"><div class="end-stat-num" id="stat-pct"></div><div class="end-stat-label">Точность</div></div>
+    </div>
+    <div class="museum-section">
+      <div class="museum-title">🏛 Музей артефактов</div>
+      <div class="museum-sub">Твоя коллекция научных реликвий</div>
+      <div class="museum-board">
+        <div class="museum-board-label">Кинематографическая артефактология · БГПУ</div>
+        <div class="museum-grid" id="museum-grid"></div>
+      </div>
+    </div>
+    <div class="end-restart">
+      <button class="restart-btn" onclick="restartGame()">↩ Начать заново</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+  { film:'«Люси» (2014)', genre:'Нейробиология', scene:'Главная героиня принимает вещество, и её мозг начинает работать на 20%, потом на 40%... Нам говорят, что обычно люди используют лишь 10% мозга.', answer:2, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Реальный эффект, но сильно преувеличен'},{icon:'🟡',label:'Кинопарадокс',desc:'Теоретически возможно в будущем'},{icon:'🔴',label:'Кино-абсурд',desc:'Миф, опровергнутый нейробиологией'},{icon:'✅',label:'Научный факт',desc:'Мозг действительно работает не полностью'}], explanation:'Миф о 10% мозга полностью опровергнут нейробиологией. Мозг активен почти целиком — просто не все области работают одновременно. ПЭТ и фМРТ показывают активность всех зон в течение дня.', alternative:'Разные области мозга специализируются на разных задачах. Нейрон потребляет энергию и в покое, поэтому «отключить» 90% было бы летальным.', artifact:{icon:'🧠',name:'Нейронный атлас',desc:'28 зон активного мозга'}, category:'absurd' },
+  { film:'«Парк юрского периода» (1993)', genre:'Генетика · Палеонтология', scene:'Учёные извлекают ДНК динозавра из крови, сохранившейся в янтаре, и используют её для клонирования тираннозавра и велоцирапторов.', answer:2, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Возможно, но не в таком масштабе'},{icon:'🟡',label:'Кинопарадокс',desc:'Принципиально возможно через 100 лет'},{icon:'🔴',label:'Кино-абсурд',desc:'ДНК не живёт миллионы лет'},{icon:'✅',label:'Научный факт',desc:'Янтарь прекрасно сохраняет биоматериал'}], explanation:'ДНК разрушается примерно за 500–1000 лет даже в идеальных условиях. Максимум — около миллиона лет. Динозавры вымерли 66 млн лет назад — их ДНК давно не существует.', alternative:'Реальные проекты: расшифровка ДНК мамонта, попытки «воскресить» тылацина. CRISPR позволяет вставлять отдельные гены, но не воссоздать целый геном.', artifact:{icon:'🦕',name:'Фрагмент янтаря',desc:'С несохранившейся ДНК'}, category:'absurd' },
+  { film:'«Армагеддон» (1998)', genre:'Физика · Астрофизика', scene:'Команда буровиков летит на астероид, бурит скважину и взрывает его изнутри ядерной бомбой. Два обломка аккуратно расходятся мимо Земли.', answer:2, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Реальный метод, но сильно упрощён'},{icon:'🟡',label:'Кинопарадокс',desc:'Возможно с технологиями будущего'},{icon:'🔴',label:'Кино-абсурд',desc:'Физически невозможно именно так'},{icon:'✅',label:'Научный факт',desc:'NASA именно так планирует защиту'}], explanation:'Взрыв раздробил бы астероид на тысячи осколков, а не «разрезал» надвое. Бурение в микрогравитации требует принципиально иного оборудования.', alternative:'Миссия DART (2022) изменила орбиту астероида Диморф кинетическим импактором — никаких ядерных бомб, только физика столкновения.', artifact:{icon:'☄️',name:'Обломок астероида',desc:'Каменно-металлический состав'}, category:'absurd' },
+  { film:'«Армагеддон» (1998)', genre:'Химия · Геология', scene:'Астероид взрывается в сцене подрыва так, будто внутри него была взрывчатка — с огнём и ударной волной.', answer:2, options:[{icon:'✅',label:'Научный факт',desc:'Астероиды содержат взрывоопасные вещества'},{icon:'🟢',label:'Экранная аномалия',desc:'Небольшое преувеличение для эффекта'},{icon:'🔴',label:'Кино-абсурд',desc:'Химически совершенно неверно'},{icon:'🟡',label:'Кинопарадокс',desc:'Возможно у некоторых типов астероидов'}], explanation:'Астероиды состоят из камня, металла и иногда льда — никаких взрывчатых веществ. Огненный взрыв в вакууме невозможен: без кислорода нет горения.', alternative:'Скальные и железо-каменные астероиды. Некоторые содержат воду в виде гидратированных минералов. Взрыв в вакууме — расширение газов без огня.', artifact:{icon:'🪨',name:'Хондритовый метеорит',desc:'Образец кремниевого астероида'}, category:'absurd' },
+  { film:'«Эволюция» (2001)', genre:'Биология · Эволюция', scene:'Внеземной организм эволюционирует за несколько часов, проходя стадии от одноклеточных до позвоночных прямо на глазах у героев.', answer:2, options:[{icon:'🟡',label:'Кинопарадокс',desc:'Теоретически возможно при иной химии жизни'},{icon:'🟢',label:'Экранная аномалия',desc:'Бактерии и правда эволюционируют быстро'},{icon:'🔴',label:'Кино-абсурд',desc:'Эволюция требует поколений и отбора'},{icon:'✅',label:'Научный факт',desc:'Некоторые организмы меняются за часы'}], explanation:'Эволюция — изменение частот аллелей через отбор, мутации и дрейф генов. Это занимает сотни и тысячи поколений. Мгновенное появление новых органов биологически невозможно.', alternative:'Реально быстрая эволюция: бактерии развивают устойчивость к антибиотикам за несколько дней. Но не за часы.', artifact:{icon:'🦠',name:'Культура мутантов',desc:'Образец быстрой адаптации'}, category:'absurd' },
+  { film:'«2012» (2009)', genre:'Геофизика · Геология', scene:'Нейтрино от солнечной вспышки разогревают ядро Земли, вызывая смещение всей земной коры — континенты сдвигаются за несколько часов.', answer:2, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Нейтрино действительно влияют на Землю'},{icon:'✅',label:'Научный факт',desc:'Такое смещение коры геологически описано'},{icon:'🔴',label:'Кино-абсурд',desc:'Физически невозможно ни при каких условиях'},{icon:'🟡',label:'Кинопарадокс',desc:'Возможно через миллионы лет'}], explanation:'Нейтрино практически не взаимодействуют с веществом. «Разогреть» ядро нейтрино — кино-абсурд. Тектонические плиты движутся со скоростью роста ногтей.', alternative:'Плиты перемещаются 2–10 см/год. Суперконтинент Пангея распался 200 млн лет назад.', artifact:{icon:'🌍',name:'Тектоническая карта',desc:'17 литосферных плит Земли'}, category:'absurd' },
+  { film:'«Послезавтра» (2004)', genre:'Климатология · Физика', scene:'Из-за остановки океанского течения температура в Нью-Йорке падает с +15°C до −100°C за несколько часов. Люди замерзают буквально на бегу.', answer:2, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Глобальное похолодание — реальная угроза'},{icon:'🟡',label:'Кинопарадокс',desc:'При иных условиях атмосферы возможно'},{icon:'🔴',label:'Кино-абсурд',desc:'Нарушает законы термодинамики'},{icon:'✅',label:'Научный факт',desc:'Термохалинная циркуляция действительно слабеет'}], explanation:'Замерзание за секунды нарушает термодинамику: Земля — огромный тепловой резервуар. AMOC действительно слабеет, но её замедление занимает десятилетия и снижает температуру на несколько градусов.', alternative:'Реальный риск: ослабление AMOC может охладить Европу на 3–5°C за несколько десятилетий.', artifact:{icon:'🌊',name:'Схема AMOC',desc:'Атлантическая меридиональная циркуляция'}, category:'absurd' },
+  { film:'«Послезавтра» (2004)', genre:'Физика · Термодинамика', scene:'Сверхмощная стена холода опускается с неба и мгновенно замораживает всё на своём пути — людей, здания, вертолёты.', answer:3, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Быстрое охлаждение реально в стратосфере'},{icon:'🟡',label:'Кинопарадокс',desc:'При экстремальных давлениях возможно'},{icon:'✅',label:'Научный факт',desc:'Полярные вихри создают такой эффект'},{icon:'🔴',label:'Кино-абсурд',desc:'Теплообмен не работает с такой скоростью'}], explanation:'Теплообмен между воздухом и телом ограничен физикой. Даже в жидком азоте (−196°C) человек замерзает не мгновенно. «Стена мороза» противоречит термодинамике.', alternative:'Реальные климатические изменения происходят в масштабе десятилетий. Полярный вихрь вызывает аномальные морозы — но не мгновенное замерзание.', artifact:{icon:'❄️',name:'Полярный кристалл',desc:'Снежинка уникальной формы'}, category:'absurd' },
+  { film:'«Назад в будущее» + «Терминатор»', genre:'Физика · Теория времени', scene:'Герои путешествуют в прошлое, встречают собственных предков и меняют ход истории — создавая временны́е петли и парадокс дедушки.', answer:1, options:[{icon:'🔴',label:'Кино-абсурд',desc:'Путешествие во времени противоречит физике'},{icon:'🟡',label:'Кинопарадокс',desc:'Не исключено ОТО, но создаёт парадоксы'},{icon:'🟢',label:'Экранная аномалия',desc:'Принцип верен, детали преувеличены'},{icon:'✅',label:'Научный факт',desc:'Уравнения Эйнштейна допускают машину времени'}], explanation:'Уравнения ОТО формально допускают замкнутые временны́е кривые. Но принцип причинной защиты Хокинга и парадокс дедушки делают машину времени в прошлое крайне проблематичной. Путешествие в будущее — реально (замедление времени доказано).', alternative:'Временны́е петли изучаются через CTCs (closed timelike curves). Многомировая интерпретация как способ избежать парадоксов.', artifact:{icon:'⏱️',name:'Флюксовый конденсатор',desc:'88 миль/ч не нужны'}, category:'paradox' },
+  { film:'«Интерстеллар» (2014)', genre:'Астрофизика · ОТО', scene:'Герой падает в чёрную дыру Гаргантюа и выживает, оказавшись в тессеракте — пятимерном пространстве за горизонтом событий.', answer:0, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Замедление времени реально, выживание — нет'},{icon:'🟡',label:'Кинопарадокс',desc:'Теоретически допускается некоторыми моделями'},{icon:'✅',label:'Научный факт',desc:'Для сверхмассивных ЧД спагеттификация мала'},{icon:'🔴',label:'Кино-абсурд',desc:'За горизонтом событий информация невозможна'}], explanation:'Гравитационное замедление времени — реальный эффект ОТО. Для сверхмассивной ЧД приливные силы у горизонта малы. Но «тессеракт» и передача информации назад во времени — художественный вымысел.', alternative:'Снимок ЧД M87 и Sgr A* (телескоп Event Horizon). Гравитационные волны — детектированы LIGO в 2015.', artifact:{icon:'🌀',name:'Карта горизонта событий',desc:'Чёрная дыра Sgr A*'}, category:'anomaly' },
+  { film:'«Железный человек» (2008)', genre:'Физика · Биомедицина', scene:'Тони Старк вживляет себе в грудную клетку дуговой реактор ~15 см, который питает электромагнит и бронекостюм.', answer:2, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Минитурные реакторы исследуются в НАСА'},{icon:'🟡',label:'Кинопарадокс',desc:'Возможно через 50 лет с термоядерным синтезом'},{icon:'🔴',label:'Кино-абсурд',desc:'Невозможно из-за радиации и энерговыделения'},{icon:'✅',label:'Научный факт',desc:'Кардиостимуляторы работают схожим образом'}], explanation:'Ядерный реактор размером с кулак производил бы смертельную радиацию. Мощность для полёта в экзоскелете (~MW) потребовала бы теплоотвода размером с дом.', alternative:'Экзоскелеты Sarcos, ReWalk — реальны. Проблема: батареи дают в 100 раз меньше энергии на кг, чем бензин.', artifact:{icon:'⚡',name:'Дуговой реактор',desc:'Уменьшенная копия Arc Reactor'}, category:'absurd' },
+  { film:'«День независимости» (1996)', genre:'Информатика · Физика', scene:'Математик загружает компьютерный вирус в материнский корабль пришельцев с MacBook за несколько часов, отключая щиты всего флота.', answer:3, options:[{icon:'🟡',label:'Кинопарадокс',desc:'Теоретически реально при схожей архитектуре'},{icon:'🟢',label:'Экранная аномалия',desc:'Реальное хакерство работает именно так'},{icon:'✅',label:'Научный факт',desc:'Вирусы действительно могут управлять сетями'},{icon:'🔴',label:'Кино-абсурд',desc:'Несовместимость архитектур делает это невозможным'}], explanation:'Вирус написан для конкретной архитектуры и ОС. Инопланетный компьютер — иная физическая реализация, иные сигналы. Это как запустить .exe в мозге осьминога.', alternative:'Stuxnet (2010) атаковал центрифуги Ирана через контроллеры Siemens. Но для этого нужно знать архитектуру — вирус разрабатывали годами.', artifact:{icon:'💾',name:'Дискета с вирусом',desc:'Mac OS 7 совместима!'}, category:'absurd' },
+  { film:'«День независимости» (1996)', genre:'Физика · Материаловедение', scene:'Инопланетный луч уничтожает Пирамиды Гизы и Эмпайр-стейт-билдинг с одинаковой лёгкостью — гранитные блоки взрываются как бумага.', answer:2, options:[{icon:'✅',label:'Научный факт',desc:'Энергетическое оружие разрушает любой материал'},{icon:'🟢',label:'Экранная аномалия',desc:'Преувеличена скорость разрушения'},{icon:'🔴',label:'Кино-абсурд',desc:'Геологическая ошибка: гранит несравнимо прочнее'},{icon:'🟡',label:'Кинопарадокс',desc:'Возможно для оружия достаточной мощности'}], explanation:'Пирамиды Гизы построены из известняка и гранита. Сцена игнорирует разницу в прочности между гранитом и стеклом — это визуальное преувеличение.', alternative:'Большая пирамида устояла под 5000 лет ветров и землетрясений. Гранитные блоки весят до 80 тонн.', artifact:{icon:'🏛️',name:'Фрагмент пирамиды',desc:'Гранит Асуанского карьера'}, category:'absurd' },
+  { film:'«Грань будущего» (2014)', genre:'Физика · Квантовая механика', scene:'Майор Кейдж каждый раз при гибели «сбрасывается» в начало дня — и может бесконечно переигрывать один и тот же временной цикл.', answer:1, options:[{icon:'🔴',label:'Кино-абсурд',desc:'Временны́е петли невозможны в принципе'},{icon:'🟡',label:'Кинопарадокс',desc:'Квантовые эффекты и мультивселенная допускают'},{icon:'🟢',label:'Экранная аномалия',desc:'Принцип верен, масштаб преувеличен'},{icon:'✅',label:'Научный факт',desc:'Квантовый эффект суперпозиции работает так'}], explanation:'Классическая физика запрещает временны́е петли. Но многомировая интерпретация КМ и CTC (замкнутые кривые ОТО) теоретически допускают их. Это парадокс: не исключено, но противоречит причинности.', alternative:'Квантовая запутанность, принцип СРТ-симметрии. Эффект «квантового бессмертия» — мысленный эксперимент, схожий с сюжетом.', artifact:{icon:'🔄',name:'Кристалл мимика',desc:'Инопланетный носитель памяти'}, category:'paradox' },
+  { film:'«Война миров» (2005)', genre:'Биология · Микробиология', scene:'Триподы пришельцев уничтожают человечество, но в финале погибают сами — от земных бактерий и вирусов, к которым у них нет иммунитета.', answer:0, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Принцип верен, но сильно упрощён'},{icon:'🔴',label:'Кино-абсурд',desc:'Земные бактерии не могут поразить инопланетян'},{icon:'🟡',label:'Кинопарадокс',desc:'Возможно для генетически схожей жизни'},{icon:'✅',label:'Научный факт',desc:'Иммунитета нет — смерть неизбежна'}], explanation:'Идея правдоподобна: без иммунитета организмы могут погибать. Но земные бактерии эволюционировали под химию земной жизни — инопланетная биохимия была бы для них недоступна.', alternative:'Обратный пример: в 1519 году европейские болезни уничтожили 90% населения Америк. Но у них была общая биохимия.', artifact:{icon:'🦠',name:'Биозащитный контейнер',desc:'Земная флора в анализе'}, category:'anomaly' },
+  { film:'«Глубокое синее море» (1999)', genre:'Биология · Нейронауки', scene:'Генетически модифицированные акулы-мако становятся умнее людей, устраивают скоординированную охоту и используют окружающую среду как инструмент.', answer:2, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Акулы и правда умнее, чем считалось'},{icon:'🟡',label:'Кинопарадокс',desc:'Возможно с достаточным объёмом мозга'},{icon:'🔴',label:'Кино-абсурд',desc:'Нейронная архитектура рыб принципиально ограничена'},{icon:'✅',label:'Научный факт',desc:'Модификация генов увеличивает интеллект'}], explanation:'Мозг акул содержит ~миллиард нейронов и организован иначе, чем мозг млекопитающих. Неокортекс — отдел сложного мышления — у акул отсутствует.', alternative:'Осьминоги — гораздо более «умные» беспозвоночные. CRISPR используется для изучения генов поведения.', artifact:{icon:'🦈',name:'Зуб модифицированной акулы',desc:'Образец акулы-мако'}, category:'absurd' },
+  { film:'«Пекло» (2007)', genre:'Астрофизика · Ядерная физика', scene:'Солнце «гаснет». Миссия доставляет термоядерную бомбу размером с Манхэттен, чтобы «перезапустить» его ядерные реакции.', answer:2, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Солнечная активность действительно цикличная'},{icon:'🟡',label:'Кинопарадокс',desc:'Через 5 млрд лет именно так и будет'},{icon:'🔴',label:'Кино-абсурд',desc:'Солнце не гаснет так, и бомба не поможет'},{icon:'✅',label:'Научный факт',desc:'Солнечный минимум — задокументированное явление'}], explanation:'Солнце — реактор весом 2×10³⁰ кг. В его ядре сгорает 600 млн тонн водорода в секунду. Оно не «гаснет». Бомба размером с Манхэттен на фоне Солнца — как светлячок рядом с прожектором.', alternative:'Солнечные минимумы снижают активность, но не угрожают жизни. Реальная угроза: корональные выбросы масс.', artifact:{icon:'☀️',name:'Солнечный протон',desc:'Частица солнечного ветра'}, category:'absurd' },
+  { film:'«Человек-муравей» (2015)', genre:'Физика · Квантовая механика', scene:'Скотт Лэнг уменьшается до размера муравья, сохраняя полный вес и силу взрослого человека. Его удары сносят врагов, несмотря на крошечные размеры.', answer:2, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Физика масштабирования преувеличена'},{icon:'✅',label:'Научный факт',desc:'Закон сохранения массы работает именно так'},{icon:'🔴',label:'Кино-абсурд',desc:'Масса и плотность при сжатии = смерть'},{icon:'🟡',label:'Кинопарадокс',desc:'Квантовые эффекты допускают нестандартную физику'}], explanation:'Если масса сохраняется при уменьшении объёма, плотность становится астрономической. Человек 80 кг в объёме муравья был бы плотнее нейтронной звезды. Если масса не сохраняется — откуда сила?', alternative:'Закон квадрат-куб: насекомые поднимают в 10–50 раз больше своего веса, потому что сила масштабируется по площади, а масса — по объёму.', artifact:{icon:'🐜',name:'Квантовый редукционер',desc:'Устройство Хэнка Пима'}, category:'absurd' },
+  { film:'«Кинг-Конг» (1933/2005)', genre:'Биология · Физика', scene:'Гигантская горилла ростом ~15 метров карабкается на Эмпайр-стейт-билдинг, держит в руке человека и сражается с самолётами.', answer:2, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Гориллы очень сильны, детали преувеличены'},{icon:'🟡',label:'Кинопарадокс',desc:'С иной биохимией возможна большая масса'},{icon:'🔴',label:'Кино-абсурд',desc:'Закон квадрат-куб делает такой размер невозможным'},{icon:'✅',label:'Научный факт',desc:'Гигантские приматы существовали — Гигантопитек'}], explanation:'При увеличении размера в 10 раз масса растёт в 1000 раз, а прочность костей — лишь в 100 раз. Кости 15-метровой гориллы переломились бы под её же весом.', alternative:'Гигантопитек был реальным — но «всего» 3 метра. Синий кит (30 м) — максимум для позвоночных, и то только в воде.', artifact:{icon:'🦍',name:'Коготь Гигантопитека',desc:'Реальный гигант-примат'}, category:'absurd' },
+  { film:'«Человек-паук» (2002)', genre:'Генетика · Биология', scene:'Питер Паркер получает укус паука и за ночь приобретает суперсилу, стеноползание, «паучье чутьё» и способность выпускать паутину из запястий.', answer:2, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Гены через укус — реально, эффект преувеличен'},{icon:'🟡',label:'Кинопарадокс',desc:'CRISPR делает такое теоретически возможным'},{icon:'🔴',label:'Кино-абсурд',desc:'Мутации от укуса не дают суперспособностей'},{icon:'✅',label:'Научный факт',desc:'Вирусы действительно переносят ДНК между видами'}], explanation:'Горизонтальный перенос генов через укус невозможен в таком масштабе. Слюна паука содержит токсины, а не ДНК-конструкции. Даже если ген попал бы в клетку — регуляторные элементы разных видов несовместимы.', alternative:'CRISPR позволяет вводить отдельные гены и менять отдельные признаки. Но не целый набор органов за одну ночь.', artifact:{icon:'🕷️',name:'Ампула паучьего яда',desc:'Нейротоксин Latrodectus'}, category:'absurd' },
+  { film:'«Годзилла» (1998)', genre:'Радиобиология · Биология', scene:'Ядерные испытания на атолле Бикини вызывают мутацию ящерицы, которая вырастает в 90-метрового монстра за несколько десятилетий.', answer:3, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Радиация действительно вызывает мутации'},{icon:'🟡',label:'Кинопарадокс',desc:'В теории возможно за миллионы лет эволюции'},{icon:'✅',label:'Научный факт',desc:'Ядерные испытания создали мутантов Бикини'},{icon:'🔴',label:'Кино-абсурд',desc:'Радиация вызывает гибель клеток, а не рост'}], explanation:'Радиация вызывает повреждения ДНК и гибель клеток — но не направленные «полезные» мутации роста. Закон квадрат-куб снова против: 90-метровое существо не может существовать.', alternative:'Реальные последствия ядерных испытаний: жители Бикини и моряки «Счастливого дракона» получили лучевую болезнь. Но не монстры.', artifact:{icon:'☢️',name:'Счётчик Гейгера',desc:'Зашкаливает у атолла Бикини'}, category:'absurd' },
+  { film:'«Обитель зла» (2002)', genre:'Вирусология · Биология', scene:'Вирус T превращает людей в зомби: жертвы умирают и оживают, сохраняя двигательные функции, но теряя высшие когнитивные способности.', answer:1, options:[{icon:'🔴',label:'Кино-абсурд',desc:'Вирусы не могут оживлять мёртвые ткани'},{icon:'🟡',label:'Кинопарадокс',desc:'Паразиты управляют поведением хозяина реально'},{icon:'✅',label:'Научный факт',desc:'Бешенство вызывает агрессию именно так'},{icon:'🟢',label:'Экранная аномалия',desc:'Принцип верен, детали сильно преувеличены'}], explanation:'Вирусы не оживляют мёртвые клетки. Но «управление поведением хозяина» реально: вирус бешенства вызывает агрессию, токсоплазма меняет поведение мышей, Ophiocordyceps превращает муравьёв в «зомби».', alternative:'Реальные «зомби»-паразиты: Ophiocordyceps unilateralis, Toxoplasma gondii, вирус бешенства. Все управляют поведением, но не воскрешают мёртвых.', artifact:{icon:'🧪',name:'Ампула вируса T',desc:'Модифицированный штамм бешенства'}, category:'paradox' },
+  { film:'«Аватар» (2009)', genre:'Нейронауки · Биология', scene:'Сознание человека полностью переносится в тело На\'ви через нейроинтерфейс — личность, память и воспринимаемое «я» мигрируют в другой мозг.', answer:1, options:[{icon:'🔴',label:'Кино-абсурд',desc:'Сознание — это мозг, перенести невозможно'},{icon:'🟡',label:'Кинопарадокс',desc:'Нейроинтерфейсы развиваются, перенос теоретичен'},{icon:'🟢',label:'Экранная аномалия',desc:'ИМК уже позволяют управлять телом мысленно'},{icon:'✅',label:'Научный факт',desc:'Квантовое сознание допускает такой перенос'}], explanation:'Нет доказанного механизма «переноса личности» — сознание возникает из специфической организации нейронов конкретного мозга. Нейроинтерфейсы позволяют управлять курсором или протезом — но не переселить «я».', alternative:'Реальные BCI: BrainGate (управление протезом мыслью), Neuralink (первый имплант человеку — 2024). Перенос сознания — пока кинопарадокс.', artifact:{icon:'🔗',name:'Нейроинтерфейс',desc:'Прообраз из реальности'}, category:'paradox' },
+  { film:'«Планета обезьян» (2011)', genre:'Нейронауки · Фармакология', scene:'Препарат ALZ-112 вводится шимпанзе Цезарю, который за несколько месяцев развивает интеллект, превосходящий человеческий.', answer:2, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Нейростимуляторы действительно улучшают память'},{icon:'🟡',label:'Кинопарадокс',desc:'Генная терапия нейронов — реальное направление'},{icon:'🔴',label:'Кино-абсурд',desc:'Интеллект не определяется одним веществом'},{icon:'✅',label:'Научный факт',desc:'Ноотропы повышают когнитивные функции именно так'}], explanation:'Интеллект — результат сложной архитектуры нейронных сетей. Нет одного препарата, который «включает» интеллект. Реальные ноотропы улучшают концентрацию и память на несколько процентов.', alternative:'Когнитивные улучшения: ингибиторы ацетилхолинэстеразы при болезни Альцгеймера, нейростимуляция при депрессии. Но не «скачок» до сверхинтеллекта.', artifact:{icon:'🍺',name:'Флакон ALZ-112',desc:'Экспериментальный нейропрепарат'}, category:'absurd' },
+  { film:'«Мумия» (1999)', genre:'Биология · Химия', scene:'Жрец Имхотеп, похороненный 3000 лет назад, воскресает и постепенно восстанавливает живую плоть, поглощая других людей.', answer:2, options:[{icon:'🟡',label:'Кинопарадокс',desc:'Криосохранение теоретически позволяет воскрешение'},{icon:'🟢',label:'Экранная аномалия',desc:'Мумии действительно хорошо сохраняются'},{icon:'🔴',label:'Кино-абсурд',desc:'Биологически невозможно — ткани необратимо разрушены'},{icon:'✅',label:'Научный факт',desc:'Мумии сохраняют нетронутые клетки тысячи лет'}], explanation:'Бальзамирование разрушает клетки и вынимает внутренние органы. За 3000 лет ДНК фрагментирована, белки денатурированы, липиды окислены. «Оживить» мумию биологически невозможно.', alternative:'Мумии дают бесценную информацию о болезнях и генетике древних египтян. Геном Тутанхамона частично секвенирован.', artifact:{icon:'⚱️',name:'Канопа Имхотепа',desc:'Сосуд для хранения органов'}, category:'absurd' },
+  { film:'«Разлом Сан-Андреас» (2015)', genre:'Геология · Океанология', scene:'Разлом Сан-Андреас вызывает землетрясение 9.6, которое порождает гигантское цунами высотой ~100 м, накрывающее Сан-Франциско.', answer:2, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Разлом опасен, но эффект преувеличен'},{icon:'🟡',label:'Кинопарадокс',desc:'При полном разрыве плиты возможно цунами'},{icon:'🔴',label:'Кино-абсурд',desc:'Сдвиговые разломы не создают цунами'},{icon:'✅',label:'Научный факт',desc:'Сан-Андреас — самый опасный разлом Калифорнии'}], explanation:'Цунами образуются при вертикальном смещении дна. Сан-Андреас — трансформный (сдвиговый) разлом: плиты движутся горизонтально, не создавая вертикальных смещений воды.', alternative:'Разлом Кашкадия у берегов Орегона (надвиговый) способен создать цунами. Сан-Андреас угрожает землетрясениями до магнитуды 8.', artifact:{icon:'📡',name:'Сейсмограф',desc:'Запись разлома Сан-Андреас'}, category:'absurd' },
+  { film:'«Геошторм» (2017)', genre:'Климатология · Инженерия', scene:'Сеть спутников «Dutch Boy» управляет погодой на всей Земле — прекращает ураганы, снегопады и жару по команде операторов.', answer:2, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Климатическое моделирование быстро развивается'},{icon:'🟡',label:'Кинопарадокс',desc:'Геоинженерия — реальное направление'},{icon:'🔴',label:'Кино-абсурд',desc:'Точечное управление погодой физически невозможно'},{icon:'✅',label:'Научный факт',desc:'Существующие технологии уже контролируют осадки'}], explanation:'Атмосфера — хаотичная нелинейная система (эффект бабочки). Точечное управление погодой требует знания и контроля всей системы планеты — что принципиально невозможно.', alternative:'Реальная геоинженерия: засев облаков йодидом серебра применяется в Китае, ОАЭ. Эксперименты с аэрозолями серы обсуждаются.', artifact:{icon:'🛰️',name:'Спутник Dutch Boy',desc:'Макет климатического спутника'}, category:'absurd' },
+  { film:'«Данте Пик» (1997)', genre:'Химия · Вулканология', scene:'Лодка героев плывёт по вулканическому озеру. Высококислотная вода начинает растворять металлическое днище за секунды.', answer:0, options:[{icon:'🟢',label:'Экранная аномалия',desc:'Кислотные озёра реальны, скорость преувеличена'},{icon:'🔴',label:'Кино-абсурд',desc:'Никакие природные кислоты не действуют так'},{icon:'🟡',label:'Кинопарадокс',desc:'Концентрированные кислоты работают так при нагреве'},{icon:'✅',label:'Научный факт',desc:'Кратерные озёра разрушают металл с такой скоростью'}], explanation:'Реальные вулканические озёра (Кавах Иджен) достигают pH 0.5. Металлы действительно разрушаются, но не за секунды — это занимает часы и дни. Принцип верен, скорость преувеличена.', alternative:'Кавах Иджен: pH 0.1–0.5, температура до 60°C. Местные шахтёры добывают серу в противогазах. Снаряжение ржавеет за недели.', artifact:{icon:'🌋',name:'Кристалл вулканической серы',desc:'Кавах Иджен, Индонезия'}, category:'anomaly' },
+  { film:'«Чужой» (1979)', genre:'Химия · Биология', scene:'Кровь ксеноморфа — концентрированная кислота, которая мгновенно прожигает несколько корпусных переборок космического корабля.', answer:1, options:[{icon:'✅',label:'Научный факт',desc:'Кислота и правда реагирует с металлами'},{icon:'🟡',label:'Кинопарадокс',desc:'Инопланетная биохимия теоретически возможна'},{icon:'🔴',label:'Кино-абсурд',desc:'Нет вещества с такой скоростью реакции в крови'},{icon:'🟢',label:'Экранная аномалия',desc:'Плавиковая кислота близка по эффекту'}], explanation:'Сильные кислоты реагируют с металлами медленнее показанного. Существование организма с кровью-кислотой противоречит биохимии: кислота разрушала бы собственные ткани ксеноморфа. Это кинопарадокс: инопланетная химия жизни теоретически может быть иной.', alternative:'Плавиковая HF прожигает стекло и стальные сплавы. «Царская водка» растворяет золото. Но в крови живого организма — противоречит всей известной биохимии.', artifact:{icon:'🧫',name:'Контейнер с кровью ксеноморфа',desc:'pH < −1, изолирован'}, category:'paradox' },
+  { film:'«Солярис» (1972)', genre:'Нейронауки · Физика', scene:'Океан планеты Солярис является единым разумным существом, способным читать мысли учёных и материализовывать их воспоминания и страхи.', answer:1, options:[{icon:'🔴',label:'Кино-абсурд',desc:'Жидкость не может быть разумной по определению'},{icon:'🟡',label:'Кинопарадокс',desc:'Нет известных структур для сознания — но мы мало знаем'},{icon:'✅',label:'Научный факт',desc:'Коллективный интеллект роёв доказан'},{icon:'🟢',label:'Экранная аномалия',desc:'Мозг — тоже «жидкая» система коллоидов'}], explanation:'Нет известных структур, способных реализовать сознание в жидкой среде без нейронов. Но мы не знаем, что такое сознание в полной мере. Лем намеренно ставил вопрос о пределах познания.', alternative:'Панпсихизм, теория ИИТ (интегрированная информация), мысленные эксперименты о небиологическом разуме. «Солярис» — это вопрос, а не ответ.', artifact:{icon:'🌊',name:'Образец солярийской протоплазмы',desc:'Мыслящий океан Кельвина'}, category:'paradox' },
+];
+
+let current=0, streak=0, maxStreak=0, correct=0, answered=false;
+let collected=new Array(QUESTIONS.length).fill(false);
+const TOTAL=QUESTIONS.length;
+
+(function(){
+  const seen=new Set(), chips=document.getElementById('films-list');
+  QUESTIONS.forEach(q=>{
+    if(!seen.has(q.film)){
+      seen.add(q.film);
+      const c=document.createElement('div');
+      c.className='film-chip'; c.textContent=q.film; chips.appendChild(c);
+    }
+  });
+})();
+
+function startGame(){
+  current=0;streak=0;maxStreak=0;correct=0;answered=false;
+  collected=new Array(QUESTIONS.length).fill(false);
+  document.getElementById('intro').style.display='none';
+  document.getElementById('endscreen').classList.remove('show');
+  document.getElementById('game').style.display='block';
+  document.getElementById('q-tot').textContent=TOTAL;
+  document.getElementById('art-bar-icons').innerHTML='';
+  renderQ();
+}
+
+function renderQ(){
+  answered=false;
+  const q=QUESTIONS[current];
+  document.getElementById('q-num').textContent=current+1;
+  document.getElementById('progress').style.width=(current/TOTAL*100)+'%';
+  document.getElementById('streak').textContent=streak;
+  document.getElementById('art-count').textContent=collected.filter(Boolean).length+' / '+TOTAL;
+  document.getElementById('card-genre').textContent=q.genre;
+  document.getElementById('card-film').textContent=q.film;
+  document.getElementById('card-scene').textContent=q.scene;
+  document.getElementById('preview-icon').textContent=q.artifact.icon;
+  document.getElementById('preview-name').textContent=q.artifact.name;
+  document.getElementById('explain').className='explain-box';
+  document.getElementById('art-reward').className='art-reward';
+  document.getElementById('next-btn').className='next-btn';
+  const card=document.getElementById('q-card');
+  card.style.animation='none'; void card.offsetHeight;
+  card.style.animation='cardIn 0.35s cubic-bezier(0.4,0,0.2,1) both';
+  const ac=document.getElementById('answers'); ac.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='ans-btn';
+    btn.innerHTML=`<span class="ans-icon">${opt.icon}</span><div class="ans-label">${opt.label}</div><div class="ans-desc">${opt.desc}</div>`;
+    btn.onclick=()=>pick(i); ac.appendChild(btn);
+  });
+}
+
+function pick(idx){
+  if(answered)return; answered=true;
+  const q=QUESTIONS[current];
+  const isOk=idx===q.answer;
+  document.querySelectorAll('.ans-btn').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.answer) b.classList.add('correct');
+    else if(i===idx) b.classList.add('wrong');
+    else b.classList.add('dimmed');
+  });
+  if(isOk){
+    streak++; maxStreak=Math.max(maxStreak,streak); correct++;
+    collected[current]=true;
+    const r=document.getElementById('art-reward'); r.className='art-reward show';
+    document.getElementById('reward-icon').textContent=q.artifact.icon;
+    document.getElementById('reward-name').textContent='+ Артефакт: '+q.artifact.name;
+    document.getElementById('reward-desc').textContent=q.artifact.desc;
+    const s=document.createElement('span'); s.textContent=q.artifact.icon; s.title=q.artifact.name;
+    document.getElementById('art-bar-icons').appendChild(s);
+    document.getElementById('art-count').textContent=collected.filter(Boolean).length+' / '+TOTAL;
+    const eb=document.getElementById('explain'); eb.className='explain-box ok show';
+    document.getElementById('explain-head').textContent=(streak>=3?'🔥 Серия '+streak+'! Правильно!':'✓ Правильно!');
+    document.getElementById('explain-body').textContent=q.explanation;
+    document.getElementById('explain-alt').innerHTML='<strong>Реальность:</strong> '+q.alternative;
+  } else {
+    streak=0;
+    const eb=document.getElementById('explain'); eb.className='explain-box fail show';
+    document.getElementById('explain-head').textContent='✗ Не совсем — правильно: '+q.options[q.answer].label;
+    document.getElementById('explain-body').textContent=q.explanation;
+    document.getElementById('explain-alt').innerHTML='<strong>Реальность:</strong> '+q.alternative;
+  }
+  document.getElementById('streak').textContent=streak;
+  document.getElementById('next-btn').className='next-btn show';
+}
+
+document.getElementById('next-btn').addEventListener('click',()=>{
+  current++; if(current>=TOTAL) showEnd(); else renderQ();
+});
+
+function showEnd(){
+  document.getElementById('game').style.display='none';
+  const end=document.getElementById('endscreen'); end.classList.add('show');
+  const artCount=collected.filter(Boolean).length;
+  const pct=Math.round(correct/TOTAL*100);
+  document.getElementById('end-score-num').textContent=artCount;
+  document.getElementById('stat-correct').textContent=correct+'/'+TOTAL;
+  document.getElementById('stat-streak').textContent=maxStreak;
+  document.getElementById('stat-pct').textContent=pct+'%';
+  const ranks=[[0,'🍿 Зритель','Наука в кино — пока загадка. Попробуй ещё раз!'],[30,'🔍 Следователь','Хороший старт! Чутьё на псевдонауку просыпается.'],[55,'🧪 Научный скептик','Неплохо! Ты умеешь отличать выдумку от науки.'],[75,'🎓 Детектив Науки','Отлично! Голливуд от тебя не скроется.'],[90,'🏆 Мастер Артефактолог','Блестяще! Детектив-артефактолог высшего класса!']];
+  const [,rankT,rankS]=[...ranks].reverse().find(([t])=>pct>=t);
+  document.getElementById('end-rank-title').textContent=rankT;
+  document.getElementById('end-rank-sub').textContent=rankS+' '+artCount+' артефактов из '+TOTAL+' собрано.';
+  const grid=document.getElementById('museum-grid'); grid.innerHTML='';
+  const catClass={anomaly:'anomaly',paradox:'paradox',absurd:'absurd',fact:'fact'};
+  const catLabel={anomaly:'🟢',paradox:'🟡',absurd:'🔴',fact:'✅'};
+  QUESTIONS.forEach((q,i)=>{
+    const cell=document.createElement('div');
+    cell.className='museum-artifact'+(collected[i]?'':' locked');
+    cell.style.animationDelay=(i*0.03)+'s';
+    cell.innerHTML=`<div class="ma-badge ${catClass[q.category]}">${catLabel[q.category]}</div><span class="ma-icon">${collected[i]?q.artifact.icon:'🔒'}</span><div class="ma-name">${collected[i]?q.artifact.name:'???'}</div><div class="ma-film">${q.film.replace(/«|»/g,'').split('(')[0].trim()}</div>`;
+    grid.appendChild(cell);
+  });
+  window.scrollTo(0,0);
+}
+
+function restartGame(){
+  document.getElementById('endscreen').classList.remove('show');
+  startGame();
+}
+</script>
+</body>
+</html>
